@@ -29,7 +29,7 @@ class SchoolRequest extends FormRequest
         if($this->isMethod('put')){
             return [
                 'name' => 'sometimes|required',
-                'email' => 'sometimes|required',
+                'email' => 'sometimes|required|email',
                 'address' => 'sometimes|required',
                 'contact' => 'sometimes|required',
             ];

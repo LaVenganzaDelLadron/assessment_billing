@@ -35,4 +35,8 @@ return [
         ],
     ],
 
+    'admission' => [
+        'login_url' => env('ADMISSION_API_LOGIN_URL', 'https://admission-api-production.up.railway.app/api/auth/login'),
+    ],
+
 ];
