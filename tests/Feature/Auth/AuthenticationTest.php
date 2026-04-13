@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -11,9 +12,11 @@ class AuthenticationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_non_student_users_can_authenticate_using_the_local_login_endpoint(): void
+    public function test_users_with_role_can_authenticate_using_the_local_login_endpoint(): void
     {
-        $user = User::factory()->create();
+$user = User::factory()->create();
+        $role = Role::factory()->create(['name' => 'admin']);
+        $user->roles()->attach($role);
 
         $response = $this->postJson('/api/auth/login', [
             'email' => $user->email,
@@ -27,6 +30,20 @@ class AuthenticationTest extends TestCase
 
         $this->assertIsString($response->json('token'));
         $this->assertNotSame('', $response->json('token'));
+    }
+
+    public function test_users_without_role_cannot_authenticate(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->postJson('/api/auth/login', [
+            'email' => $user->email,
+            'password' => 'password',
+        ]);
+
+        $response
+            ->assertForbidden()
+            ->assertJsonPath('message', 'User has no assigned role. Access denied.');
     }
 
     public function test_users_can_not_authenticate_with_invalid_password(): void

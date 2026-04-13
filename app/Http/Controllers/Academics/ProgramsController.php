@@ -3,18 +3,18 @@
 namespace App\Http\Controllers\Academics;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Class\ClassesRequest;
-use App\Models\Classes;
+use App\Http\Requests\Class\ProgramsRequest;
+use App\Models\Programs;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class ClassesController extends Controller
+class ProgramsController extends Controller
 {
 
     public function index(): JsonResponse
     {
         //
-        $data = Classes::query()->get();
+        $data = Programs::query()->get();
 
         if ($data->isEmpty()){
             return response()->json([
@@ -29,11 +29,11 @@ class ClassesController extends Controller
     }
 
 
-    public function store(ClassesRequest $request): JsonResponse
+    public function store(ProgramsRequest $request): JsonResponse
     {
         //
         $validate = $request->validated();
-        $data = Classes::create($validate);
+        $data = Programs::create($validate);
 
         return response()->json([
             'message' => 'stored successfully',
@@ -45,7 +45,7 @@ class ClassesController extends Controller
     public function show(string $id): JsonResponse
     {
         //
-        $data = Classes::query()->find($id);
+        $data = Programs::query()->find($id);
 
         if (! $data) {
             return response()->json([
@@ -61,11 +61,11 @@ class ClassesController extends Controller
     }
 
 
-    public function update(ClassesRequest $request, string $id): JsonResponse
+    public function update(ProgramsRequest $request, string $id): JsonResponse
     {
         //
         $validate = $request->validated();
-        $data = Classes::query()->find($id);
+        $data = Programs::query()->find($id);
 
         if (! $data) {
             return response()->json([
@@ -84,7 +84,7 @@ class ClassesController extends Controller
     public function destroy(string $id): JsonResponse
     {
         //
-        $data = Classes::query()->find($id);
+        $data = Programs::query()->find($id);
 
         if (! $data) {
             return response()->json([

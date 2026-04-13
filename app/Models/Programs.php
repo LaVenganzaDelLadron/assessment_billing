@@ -9,7 +9,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
 
 
-class Classes extends Model
+class Programs extends Model
 {
     use HasApiTokens, Notifiable, HasFactory;
 
