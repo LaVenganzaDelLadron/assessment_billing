@@ -26,7 +26,7 @@ class ClassesRequest extends FormRequest
             return [
                 'name' => 'required',
                 'description' => 'required',
-                'school_id' => 'required',
+                'school_id' => 'required|exists:school,id',
             ];
         }
 
@@ -34,7 +34,7 @@ class ClassesRequest extends FormRequest
             return [
                 'name' => 'sometimes|required',
                 'description' => 'sometimes|required',
-                'school_id' => 'sometimes|required',
+                'school_id' => 'sometimes|required|exists:school,id',
             ];
         }
 
