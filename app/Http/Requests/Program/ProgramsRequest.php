@@ -24,9 +24,10 @@ class ProgramsRequest extends FormRequest
     {
         if($this->isMethod('post')) {
             return [
+                'code' => 'required',
                 'name' => 'required',
-                'description' => 'required',
-                'school_id' => 'required|exists:school,id',
+                'department' => 'required',
+                'status' => 'required',
             ];
         }
 

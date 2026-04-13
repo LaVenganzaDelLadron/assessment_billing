@@ -35,8 +35,8 @@ return [
         ],
     ],
 
-    'admission' => [
-        'login_url' => env('REGISTRAR_API', 'https://registrarmodule1-production.up.railway.app/api/'),
+    'registrar' => [
+        'endpoint_url' => env('REGISTRAR_API', 'https://registrarmodule1-production.up.railway.app/api/'),
     ],
 
 ];

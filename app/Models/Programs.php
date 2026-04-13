@@ -13,19 +13,19 @@ class Programs extends Model
 {
     use HasApiTokens, Notifiable, HasFactory;
 
-    protected $table = 'classes';
+    protected $table = 'programs';
 
     public $incrementing = false;
 
     protected $keyType = 'string';
 
-    protected $fillable = ['name','description','school_id'];
+    protected $fillable = ['code','name','department','status','school_id'];
 
     protected static function booted(): void
     {
-        static::creating(function (self $classes): void {
-            if (! $classes->id) {
-                $classes->id = 'CLASS-'.Str::upper(Str::random(12));
+        static::creating(function (self $programs): void {
+            if (! $programs->id) {
+                $programs->id = 'PROG-'.Str::upper(Str::random(12));
             }
         });
     }

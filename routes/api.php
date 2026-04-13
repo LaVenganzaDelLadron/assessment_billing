@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Academics\AssignmentController;
-use App\Http\Controllers\Academics\ClassesController;
+use App\Http\Controllers\Academics\ProgramsController;
 use App\Http\Controllers\Academics\EnrollmentController;
 use App\Http\Controllers\Academics\SchoolController;
 use App\Http\Controllers\Academics\StudentGradeController;
@@ -40,12 +40,12 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('school.destroy');
     });
 
-    Route::prefix('classes')->controller(ClassesController::class)->group(function () {
-        Route::get('/', 'index')->name('class.index');
-        Route::post('/', 'store')->name('class.store');
-        Route::put('/{id}', 'update')->name('class.update');
-        Route::get('/{id}', 'show')->name('class.show');
-        Route::delete('/{id}', 'destroy')->name('class.destroy');
+    Route::prefix('program')->controller(ProgramsController::class)->group(function () {
+        Route::get('/', 'index')->name('program.index');
+        Route::post('/', 'store')->name('program.store');
+        Route::put('/{id}', 'update')->name('program.update');
+        Route::get('/{id}', 'show')->name('program.show');
+        Route::delete('/{id}', 'destroy')->name('program.destroy');
     });
 
     Route::prefix('enrollment')->controller(EnrollmentController::class)->group(function () {
