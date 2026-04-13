@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Academics;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Class\ProgramsRequest;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
+use App\Http\Requests\Program\ProgramsRequest;
 use App\Models\Programs;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -13,10 +16,14 @@ class ProgramsController extends Controller
 
     public function index(): JsonResponse
     {
-        //
+        // AUTO SYNC
+        if (!Cache::has('programs_synced_recently')) {
+            $this->syncFromRegistrar();
+        }
+
         $data = Programs::query()->get();
 
-        if ($data->isEmpty()){
+        if ($data->isEmpty()) {
             return response()->json([
                 'message' => 'data is empty',
             ], 404);
@@ -28,17 +35,59 @@ class ProgramsController extends Controller
         ], 200);
     }
 
-
-    public function store(ProgramsRequest $request): JsonResponse
+    public function syncFromRegistrar(): bool
     {
-        //
-        $validate = $request->validated();
-        $data = Programs::create($validate);
+        $apiUrl = config('services.registrar.endpoint_url');
 
-        return response()->json([
-            'message' => 'stored successfully',
-            'data' => $data,
-        ], 201);
+        if (!$apiUrl) {
+            Log::error("Registrar API URL missing");
+            return false;
+        }
+
+        try {
+            $response = Http::get($apiUrl . 'programs');
+
+            if ($response->successful()) {
+
+                $programs = $response->json();
+
+                foreach ($programs as $p) {
+
+                    if (!isset($p['code'])) continue; // skip invalid
+
+                    Programs::updateOrCreate(
+                        ['code' => $p['code']], // UNIQUE KEY
+                        [
+                            'name' => $p['name'] ?? 'N/A',
+                            'department' => $p['department'] ?? 'General',
+                            'status' => $p['status'] ?? 'active',
+                        ]
+                    );
+                }
+
+                Cache::put('programs_synced_recently', true, now()->addHours(1));
+
+                Log::info("Programs synced successfully");
+
+                return true;
+            }
+
+        } catch (\Exception $e) {
+            Log::error("Program Sync Failed: " . $e->getMessage());
+        }
+
+        return false;
+    }
+
+
+
+    public function store(ProgramsRequest $request)
+    {
+        $validated = $request->validated();
+
+        $program = Programs::create($validated);
+
+        return response()->json($program, 201);
     }
 
 

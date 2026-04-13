@@ -66,7 +66,7 @@ class AuthController extends Controller
     {
         $token = $user->createToken('auth_token')->plainTextToken;
 
-$role = $user->roles()->first()?->name ?? 'unassigned';
+        $role = $user->roles()->first()?->name ?? 'unassigned';
 
         return response()->json([
             'message' => $message,
