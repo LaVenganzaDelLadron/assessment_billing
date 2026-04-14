@@ -6,24 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Role\UserRoleRequest;
 use App\Models\UserRole;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class UserRoleController extends Controller
 {
-    public function index(): JsonResponse
+    public function index()
     {
-        $data = UserRole::query()->get();
-
-        if ($data->isEmpty()) {
-            return response()->json([
-                'message' => 'data is empty',
-            ], 404);
-        }
+        $data = UserRole::with(['user:id,name,email', 'role:id,name'])->get();
 
         return response()->json([
             'message' => 'fetch successfully',
             'data' => $data,
-        ], 200);
+        ]);
     }
 
     public function store(UserRoleRequest $request): JsonResponse
@@ -41,7 +34,7 @@ class UserRoleController extends Controller
     {
         $data = UserRole::query()->find($id);
 
-        if (!$data) {
+        if (! $data) {
             return response()->json([
                 'message' => 'data not found',
             ], 404);
@@ -58,7 +51,7 @@ class UserRoleController extends Controller
         $validate = $request->validated();
         $data = UserRole::query()->find($id);
 
-        if (!$data) {
+        if (! $data) {
             return response()->json([
                 'message' => 'data not found',
             ], 404);
@@ -76,7 +69,7 @@ class UserRoleController extends Controller
     {
         $data = UserRole::query()->find($id);
 
-        if (!$data) {
+        if (! $data) {
             return response()->json([
                 'message' => 'data not found',
             ], 404);

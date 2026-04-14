@@ -79,6 +79,14 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('billing.destroy');
     });
 
+    Route::prefix('teacher-subject')->controller(TeacherSubController::class)->group(function () {
+        Route::get('/', 'index')->name('teacher-subject.index');
+        Route::post('/', 'store')->name('teacher-subject.store');
+        Route::put('/{id}', 'update')->name('teacher-subject.update');
+        Route::get('/{id}', 'show')->name('teacher-subject.show');
+        Route::delete('/{id}', 'destroy')->name('teacher-subject.destroy');
+    });
+
     Route::prefix('year')->controller(YearController::class)->group(function () {
         Route::get('/', 'index')->name('year.index');
         Route::post('/', 'store')->name('year.store');
@@ -92,10 +100,6 @@ Route::middleware(['auth:sanctum', 'role:admin|teacher'])->group(function () {
 
     Route::prefix('teacher-subject')->controller(TeacherSubController::class)->group(function () {
         Route::get('/', 'index')->name('teacher-subject.index');
-        Route::post('/', 'store')->name('teacher-subject.store');
-        Route::put('/{id}', 'update')->name('teacher-subject.update');
-        Route::get('/{id}', 'show')->name('teacher-subject.show');
-        Route::delete('/{id}', 'destroy')->name('teacher-subject.destroy');
     });
 
     Route::prefix('assignment')->controller(AssignmentController::class)->group(function () {

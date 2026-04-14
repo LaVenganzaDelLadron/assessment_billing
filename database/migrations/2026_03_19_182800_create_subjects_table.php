@@ -13,9 +13,11 @@ return new class extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->string('id');
-            $table->string('code');
-            $table->string('name');
-            $table->string('class_id');
+            $table->string('subject_code')->unique();
+            $table->string('subject_name');
+            $table->unsignedSmallInteger('units');
+            $table->string('type')->nullable();
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

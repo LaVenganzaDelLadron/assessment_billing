@@ -2,15 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
+use Laravel\Sanctum\HasApiTokens;
 
 class Subjects extends Model
 {
-    use HasApiTokens, Notifiable, HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'subjects';
 
@@ -18,14 +19,21 @@ class Subjects extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['code','name','class_id'];
+    protected $fillable = ['subject_code', 'subject_name', 'units', 'type', 'status'];
 
     protected static function booted(): void
     {
-        static::creating(function (self $subjects): void {
-            if (! $subjects->id) {
-                $subjects->id = 'SUBJ-'.Str::upper(Str::random(12));
+        static::creating(function (self $subject): void {
+            if (! $subject->id) {
+                $subject->id = 'SUBJ-'.Str::upper(Str::random(8));
             }
         });
+    }
+
+    public function programs(): BelongsToMany
+    {
+        return $this->belongsToMany(Programs::class, 'program_subject', 'subject_id', 'program_id')
+            ->withPivot(['year_level', 'semester', 'school_year', 'status'])
+            ->withTimestamps();
     }
 }

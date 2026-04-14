@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
@@ -33,5 +34,12 @@ class Programs extends Model
     public function students(): HasMany
     {
         return $this->hasMany(Students::class, 'program_id', 'id');
+    }
+
+    public function subjects(): BelongsToMany
+    {
+        return $this->belongsToMany(Subjects::class, 'program_subject', 'program_id', 'subject_id')
+            ->withPivot(['year_level', 'semester', 'school_year', 'status'])
+            ->withTimestamps();
     }
 }
