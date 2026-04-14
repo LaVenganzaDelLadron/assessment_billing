@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Support\Str;
-
+use Laravel\Sanctum\HasApiTokens;
 
 class Programs extends Model
 {
-    use HasApiTokens, Notifiable, HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'programs';
 
@@ -19,7 +19,7 @@ class Programs extends Model
 
     protected $keyType = 'string';
 
-    protected $fillable = ['code','name','department','status','school_id'];
+    protected $fillable = ['code', 'name', 'department', 'status'];
 
     protected static function booted(): void
     {
@@ -28,5 +28,10 @@ class Programs extends Model
                 $programs->id = 'PROG-'.Str::upper(Str::random(12));
             }
         });
+    }
+
+    public function students(): HasMany
+    {
+        return $this->hasMany(Students::class, 'program_id', 'id');
     }
 }

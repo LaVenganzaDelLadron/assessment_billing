@@ -37,6 +37,7 @@ return [
 
     'registrar' => [
         'endpoint_url' => env('REGISTRAR_API', 'https://registrarmodule1-production.up.railway.app/api/'),
+        'token' => env('REGISTRAR_API_TOKEN'),
     ],
 
 ];

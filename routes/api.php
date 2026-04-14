@@ -1,9 +1,9 @@
 <?php
 
 use App\Http\Controllers\Academics\AssignmentController;
-use App\Http\Controllers\Academics\ProgramsController;
 use App\Http\Controllers\Academics\EnrollmentController;
-use App\Http\Controllers\Academics\SchoolController;
+use App\Http\Controllers\Academics\ProgramsController;
+use App\Http\Controllers\Academics\StudentController;
 use App\Http\Controllers\Academics\StudentGradeController;
 use App\Http\Controllers\Academics\SubjectController;
 use App\Http\Controllers\Academics\SubmissionController;
@@ -23,7 +23,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
 });
 
-
 Route::prefix('auth')->controller(AuthController::class)->group(function () {
     Route::post('/register', 'register')->name('register');
     Route::post('/login', 'login')->name('login');
@@ -32,20 +31,20 @@ Route::prefix('auth')->controller(AuthController::class)->group(function () {
 
 Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
 
-    Route::prefix('school')->controller(SchoolController::class)->group(function () {
-        Route::get('/', 'index')->name('school.index');
-        Route::post('/', 'store')->name('school.store');
-        Route::put('/{id}', 'update')->name('school.update');
-        Route::get('/{id}', 'show')->name('school.show');
-        Route::delete('/{id}', 'destroy')->name('school.destroy');
-    });
-
     Route::prefix('program')->controller(ProgramsController::class)->group(function () {
         Route::get('/', 'index')->name('program.index');
         Route::post('/', 'store')->name('program.store');
         Route::put('/{id}', 'update')->name('program.update');
         Route::get('/{id}', 'show')->name('program.show');
         Route::delete('/{id}', 'destroy')->name('program.destroy');
+    });
+
+    Route::prefix('student')->controller(StudentController::class)->group(function () {
+        Route::get('/', 'index')->name('student.index');
+        Route::post('/', 'store')->name('student.store');
+        Route::put('/{id}', 'update')->name('student.update');
+        Route::get('/{id}', 'show')->name('student.show');
+        Route::delete('/{id}', 'destroy')->name('student.destroy');
     });
 
     Route::prefix('enrollment')->controller(EnrollmentController::class)->group(function () {
@@ -144,17 +143,17 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
     });
 });
 
-    Route::prefix('user-role')->controller(UserRoleController::class)->group(function () {
-        Route::get('/', 'index')->name('user-role.index');
-        Route::post('/', 'store')->name('user-role.store');
-        Route::put('/{id}', 'update')->name('user-role.update');
-        Route::get('/{id}', 'show')->name('user-role.show');
-        Route::delete('/{id}', 'destroy')->name('user-role.destroy');
-    });
-    Route::prefix('role')->controller(RoleController::class)->group(function () {
-        Route::get('/', 'index')->name('role.index');
-        Route::post('/', 'store')->name('role.store');
-        Route::put('/{id}', 'update')->name('role.update');
-        Route::get('/{id}', 'show')->name('role.show');
-        Route::delete('/{id}', 'destroy')->name('role.destroy');
-    });
+Route::prefix('user-role')->controller(UserRoleController::class)->group(function () {
+    Route::get('/', 'index')->name('user-role.index');
+    Route::post('/', 'store')->name('user-role.store');
+    Route::put('/{id}', 'update')->name('user-role.update');
+    Route::get('/{id}', 'show')->name('user-role.show');
+    Route::delete('/{id}', 'destroy')->name('user-role.destroy');
+});
+Route::prefix('role')->controller(RoleController::class)->group(function () {
+    Route::get('/', 'index')->name('role.index');
+    Route::post('/', 'store')->name('role.store');
+    Route::put('/{id}', 'update')->name('role.update');
+    Route::get('/{id}', 'show')->name('role.show');
+    Route::delete('/{id}', 'destroy')->name('role.destroy');
+});
