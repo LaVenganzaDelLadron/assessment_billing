@@ -11,6 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if (! Schema::hasIndex('subjects', ['id'], 'primary') && ! Schema::hasIndex('subjects', ['id'], 'unique')) {
+            Schema::table('subjects', function (Blueprint $table) {
+                $table->unique('id', 'subjects_id_unique');
+            });
+        }
+
         Schema::create('program_subject', function (Blueprint $table) {
             $table->string('subject_id');
             $table->string('program_id');
