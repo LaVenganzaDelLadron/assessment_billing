@@ -87,13 +87,13 @@ Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('teacher-subject.destroy');
     });
 
-    Route::prefix('year')->controller(YearController::class)->group(function () {
-        Route::get('/', 'index')->name('year.index');
-        Route::post('/', 'store')->name('year.store');
-        Route::put('/{id}', 'update')->name('year.update');
-        Route::get('/{id}', 'show')->name('year.show');
-        Route::delete('/{id}', 'destroy')->name('year.destroy');
-    });
+    //Route::prefix('year')->controller(YearController::class)->group(function () {
+    //    Route::get('/', 'index')->name('year.index');
+    //    Route::post('/', 'store')->name('year.store');
+    //    Route::put('/{id}', 'update')->name('year.update');
+    //    Route::get('/{id}', 'show')->name('year.show');
+    //    Route::delete('/{id}', 'destroy')->name('year.destroy');
+    //});
 });
 
 Route::middleware(['auth:sanctum', 'role:admin|teacher'])->group(function () {
@@ -110,17 +110,21 @@ Route::middleware(['auth:sanctum', 'role:admin|teacher'])->group(function () {
         Route::delete('/{id}', 'destroy')->name('assignment.destroy');
     });
 
-    Route::prefix('grade')->controller(StudentGradeController::class)->group(function () {
-        Route::get('/', 'index')->name('grade.index');
-        Route::post('/', 'store')->name('grade.store');
-        Route::put('/{id}', 'update')->name('grade.update');
-        Route::get('/{id}', 'show')->name('grade.show');
-        Route::delete('/{id}', 'destroy')->name('grade.destroy');
-    });
+    //Route::prefix('grade')->controller(StudentGradeController::class)->group(function () {
+    //    Route::get('/', 'index')->name('grade.index');
+    //    Route::post('/', 'store')->name('grade.store');
+    //    Route::put('/{id}', 'update')->name('grade.update');
+    //    Route::get('/{id}', 'show')->name('grade.show');
+    //    Route::delete('/{id}', 'destroy')->name('grade.destroy');
+    //});
 
 });
 
 Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
+
+    Route::prefix('assignment')->controller(AssignmentController::class)->group(function () {
+        Route::get('/', 'index')->name('assignment.index');
+    });
 
     Route::prefix('assessment')->controller(AssessmentController::class)->group(function () {
         Route::get('/', 'index')->name('assessment.index');
@@ -130,21 +134,6 @@ Route::middleware(['auth:sanctum', 'role:student'])->group(function () {
         Route::get('/{studentId}/breakdown', 'breakdown')->name('assessment.breakdown');
     });
 
-    Route::prefix('payment')->controller(PaymentController::class)->group(function () {
-        Route::get('/', 'index')->name('payment.index');
-        Route::post('/', 'store')->name('payment.store');
-        Route::put('/{id}', 'update')->name('payment.update');
-        Route::get('/{id}', 'show')->name('payment.show');
-        Route::delete('/{id}', 'destroy')->name('payment.destroy');
-    });
-
-    Route::prefix('submission')->controller(SubmissionController::class)->group(function () {
-        Route::get('/', 'index')->name('submission.index');
-        Route::post('/', 'store')->name('submission.store');
-        Route::put('/{id}', 'update')->name('submission.update');
-        Route::get('/{id}', 'show')->name('submission.show');
-        Route::delete('/{id}', 'destroy')->name('submission.destroy');
-    });
 });
 
 Route::prefix('user-role')->controller(UserRoleController::class)->group(function () {
